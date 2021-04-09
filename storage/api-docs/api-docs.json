@@ -1,0 +1,690 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Biilche.ir",
+        "description": "Biilche Application API",
+        "contact": {
+            "email": "ansaramman@gmail.com"
+        },
+        "version": "1.1.0"
+    },
+    "servers": [
+        {
+            "url": "http://admin.biilche.ir/api/v1",
+            "description": "Version 1"
+        }
+    ],
+    "paths": {
+        "/question/{question_id}/getAnswers": {
+            "get": {
+                "tags": [
+                    "Questions"
+                ],
+                "summary": "Get list of question answers",
+                "description": "Returns list of answers",
+                "operationId": "getProjectAnswers",
+                "parameters": [
+                    {
+                        "name": "question_id",
+                        "in": "path",
+                        "description": "Question id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/QuestionResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/questions/{question_id}/sendAnswers": {
+            "post": {
+                "tags": [
+                    "Questions"
+                ],
+                "summary": "Store New Answer for Question",
+                "description": "",
+                "operationId": "storeAnswers",
+                "parameters": [
+                    {
+                        "name": "question_id",
+                        "in": "path",
+                        "description": "Question id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreAnswerRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/QuestionResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login User",
+                "description": "",
+                "operationId": "App\\Http\\Controllers\\Api\\v1\\AuthController::login",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User Register",
+                "description": "",
+                "operationId": "App\\Http\\Controllers\\Api\\v1\\AuthController::register",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/me": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User Details",
+                "description": "",
+                "operationId": "App\\Http\\Controllers\\Api\\v1\\AuthController::me",
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User Logout",
+                "description": "",
+                "operationId": "App\\Http\\Controllers\\Api\\v1\\AuthController::logout",
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/refresh": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User Token Refresh",
+                "description": "",
+                "operationId": "App\\Http\\Controllers\\Api\\v1\\AuthController::refresh",
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/getQuestions?page=1": {
+            "get": {
+                "tags": [
+                    "Questions"
+                ],
+                "summary": "Get list of questions",
+                "description": "Returns list of questions",
+                "operationId": "getProjectsList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/QuestionCollection"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/sendQuestions": {
+            "post": {
+                "tags": [
+                    "Questions"
+                ],
+                "summary": "Store New Question",
+                "description": "Store New Question",
+                "operationId": "storeQuestion",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreQuestionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/questions/toggleToFavorite": {
+            "post": {
+                "tags": [
+                    "Questions"
+                ],
+                "summary": "Add/Delete from to user favorite list",
+                "description": "Add/Delete from to user favorite list",
+                "operationId": "toggleToFavorite",
+                "requestBody": {
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/getSkills": {
+            "get": {
+                "tags": [
+                    "Skills"
+                ],
+                "summary": "",
+                "description": "Show all job skills",
+                "operationId": "App\\Http\\Controllers\\Api\\v1\\SkillController::getSkills",
+                "responses": {
+                    "200": {
+                        "description": "Skill Collection"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "LoginRequest": {
+                "title": "User Login request",
+                "description": "User auth request body data",
+                "required": [
+                    "mobile",
+                    "login_code"
+                ],
+                "properties": {
+                    "mobile": {
+                        "title": "mobile",
+                        "description": "",
+                        "type": "string",
+                        "example": "09306029572"
+                    },
+                    "login_code": {
+                        "title": "login_code",
+                        "description": "",
+                        "type": "string",
+                        "example": "1234"
+                    }
+                },
+                "type": "object"
+            },
+            "RegisterRequest": {
+                "title": "User Register request",
+                "description": "User register request body data",
+                "required": [
+                    "name",
+                    "family",
+                    "mobile",
+                    "password"
+                ],
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "description": "",
+                        "type": "string",
+                        "example": "حسین"
+                    },
+                    "family": {
+                        "title": "family",
+                        "description": "",
+                        "type": "string",
+                        "example": "سوهان"
+                    },
+                    "mobile": {
+                        "title": "mobile",
+                        "description": "",
+                        "type": "string",
+                        "example": "09140000000"
+                    },
+                    "password": {
+                        "title": "password",
+                        "description": "",
+                        "type": "string",
+                        "example": "12345678"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreAnswerRequest": {
+                "title": "Store Answer request",
+                "description": "Store Answer request body data",
+                "required": [
+                    "content"
+                ],
+                "properties": {
+                    "content": {
+                        "title": "content",
+                        "description": "Content of the new Question",
+                        "type": "string",
+                        "example": "A nice Answer"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreQuestionRequest": {
+                "title": "Store Question request",
+                "description": "Store Question request body data",
+                "required": [
+                    "content"
+                ],
+                "properties": {
+                    "content": {
+                        "title": "content",
+                        "description": "Content of the new Question",
+                        "type": "string",
+                        "example": "A nice Question"
+                    }
+                },
+                "type": "object"
+            },
+            "QuestionCollection": {
+                "title": "QuestionCollection",
+                "description": "Question Collection",
+                "properties": {
+                    "questions": {
+                        "title": "questions",
+                        "description": "Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Question"
+                        }
+                    },
+                    "status": {
+                        "title": "status",
+                        "description": "Data status",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "QuestionCollection"
+                }
+            },
+            "QuestionResource": {
+                "title": "QuestionResource",
+                "description": "Question Resource",
+                "properties": {
+                    "question": {
+                        "$ref": "#/components/schemas/Question"
+                    },
+                    "status": {
+                        "title": "status",
+                        "description": "Data status",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "QuestionResource"
+                }
+            },
+            "UserResource": {
+                "title": "UserResource",
+                "description": "User Resource",
+                "xml": {
+                    "name": "UserResource"
+                }
+            },
+            "Answer": {
+                "title": "Answer",
+                "description": "Answer model",
+                "xml": {
+                    "name": "Answer"
+                }
+            },
+            "File": {
+                "title": "File",
+                "description": "File model",
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "description": "file name",
+                        "type": "string",
+                        "example": "image.jpg"
+                    },
+                    "url": {
+                        "title": "url",
+                        "description": "file url",
+                        "type": "string",
+                        "example": "http://biilche.ir/images/image.jpg"
+                    },
+                    "type": {
+                        "title": "type",
+                        "description": "file type",
+                        "type": "string",
+                        "example": "icon,image,avatar,..."
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "File"
+                }
+            },
+            "Question": {
+                "title": "Question",
+                "description": "Question model",
+                "properties": {
+                    "user_id": {
+                        "title": "user_id",
+                        "description": "question user id",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "id": {
+                        "title": "id",
+                        "description": "question id",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "content": {
+                        "title": "content",
+                        "description": "question content text",
+                        "type": "string",
+                        "format": "string",
+                        "example": "This is my question"
+                    },
+                    "best_answer_id": {
+                        "title": "best_answer_id",
+                        "description": "Question best answer id",
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "answerCount": {
+                        "title": "answerCount",
+                        "description": "Question answers count",
+                        "type": "string",
+                        "example": "This is new project's description"
+                    },
+                    "likeCount": {
+                        "title": "likeCount",
+                        "description": "Question like count",
+                        "type": "string",
+                        "example": "120"
+                    },
+                    "created": {
+                        "title": "created",
+                        "description": "Question created time",
+                        "type": "string",
+                        "example": "1399/07/20"
+                    },
+                    "past_tense": {
+                        "title": "past_tense",
+                        "description": "Question created time ago",
+                        "type": "string",
+                        "example": "12 min ago"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "best_answer": {
+                        "title": "best_answer",
+                        "description": "Project best answer resource",
+                        "type": "object"
+                    },
+                    "skills": {
+                        "title": "skills",
+                        "description": "Project chosen skills",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Skill"
+                        }
+                    },
+                    "images": {
+                        "title": "images",
+                        "description": "Question images",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/File"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Question"
+                }
+            },
+            "Skill": {
+                "title": "Skill",
+                "description": "Skill model",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "skill id",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "title": "user_id",
+                        "description": "question user id",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "title": {
+                        "title": "title",
+                        "description": "skill title",
+                        "type": "string",
+                        "format": "string",
+                        "example": "مهندسی کشاورزی"
+                    },
+                    "label": {
+                        "title": "label",
+                        "description": "skill label",
+                        "type": "string",
+                        "example": "agri eng"
+                    },
+                    "slug": {
+                        "title": "slug",
+                        "description": "skill slug",
+                        "type": "string",
+                        "example": "agri-ang"
+                    },
+                    "icon": {
+                        "title": "icon",
+                        "description": "skill icon url",
+                        "type": "string",
+                        "example": "http://biilche.ir/images/icon.png"
+                    },
+                    "image": {
+                        "title": "image",
+                        "description": "skill image",
+                        "type": "string",
+                        "example": "http://biilche.ir/images/image.png"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Skill"
+                }
+            },
+            "User": {
+                "title": "User",
+                "description": "User model",
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "description": "user name",
+                        "type": "string",
+                        "format": "string",
+                        "example": "jon"
+                    },
+                    "family": {
+                        "title": "family",
+                        "description": "user family",
+                        "type": "string",
+                        "example": "due"
+                    },
+                    "full_name": {
+                        "title": "full_name",
+                        "description": "user full name",
+                        "type": "string",
+                        "example": "jon due"
+                    },
+                    "avatar": {
+                        "title": "avatar",
+                        "description": "user avatar url",
+                        "type": "string",
+                        "example": "http://biilche.ir/images/avatar.pnj"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "User"
+                }
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}
