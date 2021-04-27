@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\v1\StoreAnswerRequest;
 use App\Http\Resources\v1\AnswerResource;
 use App\Http\Resources\v1\QuestionResource;
 use App\Models\Question;
@@ -19,15 +18,15 @@ class AnswerController extends Controller
     {
         try {
 
-            $question=Question::find($question_id);
+            $question = Question::find($question_id);
 
-            if ($question){
+            if ($question) {
                 return response()->json([
                     'status' => true,
-                    'question' => new QuestionResource($question,true)
+                    'question' => new QuestionResource($question, true)
                 ]);
-            }else{
-                return $this->customResponse(false,'سوال یافت نشد');
+            } else {
+                return $this->customResponse(false, 'سوال یافت نشد');
             }
 
 
@@ -37,40 +36,19 @@ class AnswerController extends Controller
     }
 
     /**
-     * @OA\Post(
-     *      path="/questions/{question_id}/sendAnswers",
-     *      operationId="storeAnswers",
-     *      tags={"Questions"},
-     *      summary="Store New Answer for Question",
-     *      description="",
-     *
-     *
-     *     @OA\Parameter(
-     *          name="question_id",
-     *          description="Question id",
-     *          required=true,
-     *          in="path",
-     *          @OA\Schema(
-     *              type="integer"
-     *          )
-     *      ),
-     *      @OA\RequestBody(
-     *          required=true,
-     *          @OA\JsonContent(ref="#/components/schemas/StoreAnswerRequest")
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/QuestionResource")
-     *       ),
-     *     )
      * @param $question_id
-     * @param StoreAnswerRequest $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function sendAnswers($question_id, StoreAnswerRequest $request)
+    public function sendAnswers($question_id, Request $request)
     {
         try {
+
+            if (!$request->has('content') || trim($request->input('content')) == '' || strlen($request->input('content')) < 5) {
+                return $this->customResponse(false, 'موارد الزامی را وارد کنید', [], array(
+                    'content' => 'پاسخی که میدهید باید از 5 کاراکتر بیشتر باشد'
+                ));
+            }
 
             $user = auth()->user();
             $question = Question::findOrFail($question_id);

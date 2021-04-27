@@ -15,20 +15,16 @@ class ProductCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return [
-            'products' => $this->collection->map(function ($item){
-                return[
+        return $this->collection->map(function ($item){
+                return [
                     'title'=>$item->title,
                     'image'=>$item->image?Storage::url($item->image['url']):null,
                     'description'=>$item->description,
                     'gallery'=>$item->gallery,
                     'category'=>new CategoryResource($item->category),
-                    'user'=>new UserResource($item->user),
-                    'skills'=>new SkillCollection($item->skills)
+                    'user'=>new UserSimpleResource($item->user),
+//                    'skills'=>new SkillCollection($item->skills)
                 ];
-            }),
-            'links' =>$request,
-        ];
+            });
     }
-    public static $wrap = 'products';
 }

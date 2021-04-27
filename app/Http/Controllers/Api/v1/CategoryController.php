@@ -12,14 +12,6 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     /**
-     * @OA\Get(
-     *
-     *     path="/getCategories",
-     *     tags={"Category"},
-     *     summary="",
-     *     description="Show all job categories",
-     *     @OA\Response(response="200", description="Category Collection")
-     * )
      */
     public function getCategories(){
        try{

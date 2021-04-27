@@ -4,13 +4,34 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\v1\ProductCollection;
-use App\Http\Resources\v1\UserResource;
+use App\Http\Resources\v1\UserProfileResource;
+
 use App\Models\User;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+
+use GuzzleHttp\Client;
 
 class UserController extends Controller
 {
+
+    public function my_ips(){
+
+        $client = new Client();
+
+        try {
+             $response = $client->request('GET', 'http://localhost:4000/my_ip');
+
+             return $response->getBody();
+//            return response()->json([
+//                "status"=>true,
+//                "response"=>$response
+//            ]);
+        } catch (GuzzleException $e) {
+            return $this->customResponse(false,$e->getMessage());
+        }
+    }
+
     public function setCategory(Request $request)
     {
         try {
@@ -62,7 +83,7 @@ class UserController extends Controller
             $client=$request->user();
             if ($user) {
                 $thisHasMyAccount=$client ? ($user->id==$client->id?true:false):false;
-                $data=new UserResource($user,$thisHasMyAccount);
+                $data=new UserProfileResource($user,$thisHasMyAccount);
                 return response()->json($data);
             } else {
                 return response()->json([

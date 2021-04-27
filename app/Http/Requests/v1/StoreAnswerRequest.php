@@ -25,22 +25,6 @@ class StoreAnswerRequest extends FormRequest
     {
         return true;
     }
-
-    /**
-     * @OA\Property(
-     *      title="content",
-     *      description="Content of the new Question",
-     *      example="A nice Answer"
-     * )
-     *
-     * @var string
-     */
-    private $content;
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [

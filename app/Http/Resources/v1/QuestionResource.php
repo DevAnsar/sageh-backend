@@ -4,17 +4,6 @@ namespace App\Http\Resources\v1;
 
 use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Resources\Json\JsonResource;
-
-
-/**
- * @OA\Schema(
- *     title="QuestionResource",
- *     description="Question Resource",
- *     @OA\Xml(
- *         name="QuestionResource"
- *     )
- * )
- */
 class QuestionResource extends JsonResource
 {
 

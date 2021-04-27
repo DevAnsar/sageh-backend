@@ -36,6 +36,7 @@ class QuestionCollection extends ResourceCollection
                 'best_answer'=>$item->best_answer?new AnswerResource($item->best_answer):null,
 //                'skills'=>new SkillCollection($item->skills),
                 'images'=>new FileCollection($item->images),
+                'category'=>new CategoryResource($item->category),
             ];
             return $questions;
         });

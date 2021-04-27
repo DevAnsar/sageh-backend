@@ -40,12 +40,13 @@ class Controller extends BaseController
         ],200);
 
     }
-    public function customResponse($status,$message='',array $extra=[])
+    public function customResponse($status,$message='',array $extra=[],array $errors=[])
     {
 
         $data=[
             'status' => $status,
             'message' => $message,
+            'errors'=>$errors
         ];
 
         if (sizeof($extra)>0){

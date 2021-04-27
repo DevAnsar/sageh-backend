@@ -104,4 +104,72 @@ class ProductSearch
 
         return $products;
     }
+
+    public function getSearchForClient(Request $request, $with = [])
+    {
+
+        if ($request->has('category_id') && !empty($request->input('category_id')) && $request->input('category_id') != 0 ) {
+            $category_id=$request->input('category_id');
+            $category=Category::find($category_id);
+            if ($category){
+                $products=$category->products();
+            }else{
+                $products = Product::query();
+            }
+        }
+        else{
+            $products = Product::query();
+        }
+
+        if ($request->has('order_by') && $request->input('order_by')!=''){
+            $order_by=$request->input('order_by');
+
+            switch ($order_by){
+                case 'ASC':
+
+                    $products=$products->orderBy('created_at','ASC');
+                    break;
+                case 'DESC':
+                    $products=$products->orderBy('created_at','DESC');
+                    break;
+                default:
+                    $products=$products->orderBy('created_at','DESC');
+                    break;
+            }
+        }else{
+            $products=$products->orderBy('created_at','DESC');
+        }
+
+        if ($request->has('city_id') && is_numeric($request->input('city_id')) && $request->input('city_id')!=0){
+            $products=$products->where('city_id','=',$request->input('city_id'));
+        }
+        if ($request->has('user_id') && is_numeric($request->input('user_id')) && $request->input('user_id')!=0){
+            $products=$products->where('user_id','=',$request->input('user_id'));
+        }
+
+        if(isset($request['string']) && !empty($request['string']))
+        {
+            $searchValues = preg_split('/\s+/', $request['string']);
+            $products->where(function ($q) use ($searchValues) {
+                foreach ($searchValues as $value) {
+                    $q->where('content', 'like', '%' . $value . '%');
+                }
+            });
+        }
+
+
+        foreach ($with as $item) {
+            if ($item != '') {
+                $products->with($item);
+            }
+        }
+
+
+
+        $products=$products->paginate($this->paginate);
+//        $products=$products->withPath($this->string);
+        $this->products = $products;
+
+        return $products;
+    }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\v1\AnswerController;
 use App\Http\Controllers\Api\v1\AuthController;
+use App\Http\Controllers\Api\v1\ProductController;
 use App\Http\Controllers\Api\v1\QuestionController;
 use App\Http\Controllers\Api\v1\CategoryController;
 use \App\Http\Controllers\Api\v1\UserController;
@@ -10,13 +11,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::namespace('\Api\v1')->prefix('v1')->group(function () {
     Route::get('/getCategories', [CategoryController::class,'getCategories']);
-    Route::get('/getUsers/{category_id}', [UserController::class,'getUsers']);
+
+//    Route::get('/getUsers/{category_id}', [UserController::class,'getUsers']);
 //    Route::get('/getSkills', [SkillController::class,'getSkills']);
     Route::get('/getQuestions', [QuestionController::class,'getQuestions']);
     Route::get('/questions/{question_id}/getAnswers', [AnswerController::class,'getAnswers']);
-    Route::get('/user/{user_id}', [UserController::class,'getUser']);
-    Route::get('/user/{user_id}/products', [UserController::class,'getProducts']);
 
+    Route::get('/users/{user_id}', [UserController::class,'getUser']);
+    Route::get('/users/{user_id}/products', [UserController::class,'getProducts']);
+
+    Route::get('/getProducts', [ProductController::class,'getProducts']);
+    Route::get('/products/{product_id}', [ProductController::class,'getProduct']);
+
+    //login and register
     Route::group(['middleware' => 'api','prefix' => 'auth'],function () {
         Route::post('check_mobile', [AuthController::class,'check_mobile']);
         Route::post('login', [AuthController::class,'login']);
@@ -38,9 +45,16 @@ Route::namespace('\Api\v1')->prefix('v1')->group(function () {
         Route::post('/sendQuestions', [QuestionController::class,'sendQuestions']);
         Route::post('/questions/{question_id}/sendAnswers', [AnswerController::class,'sendAnswers']);
         Route::post('/questions/toggleToFavorite', [QuestionController::class,'toggleToFavorite']);
+        Route::get('/questions/favorites', [QuestionController::class,'my_favorite_questions']);
+        Route::patch('/questions/{question_id}/edit', [QuestionController::class,'my_question_edit']);
+        Route::delete('/questions/{question_id}/delete', [QuestionController::class,'my_question_destroy']);
+        Route::delete('/questions/{question_id}/setBestAnswer', [QuestionController::class,'set_best_answer']);
     });
+
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
     });
+
+    Route::get('/my-ip', [UserController::class,'my_ips']);
 });
 
