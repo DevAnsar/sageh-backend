@@ -20,10 +20,11 @@ class AnswerController extends Controller
 
             $question = Question::find($question_id);
 
+            $user=\App\Models\User::find(1);
             if ($question) {
                 return response()->json([
                     'status' => true,
-                    'question' => new QuestionResource($question, true)
+                    'question' => new QuestionResource($question, $user,true)
                 ]);
             } else {
                 return $this->customResponse(false, 'سوال یافت نشد');

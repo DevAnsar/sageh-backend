@@ -8,7 +8,7 @@
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description"/>
     <meta content="Themesbrand" name="author"/>
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{asset('admin/assets/images/favicon.ico')}}">
+    <link rel="shortcut icon" href="{{asset('admin_styles/assets/images/favicon.ico')}}">
 
     <!-- jquery.vectormap css -->
     {{--<link href="{{asset('admin/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css')}}"--}}
@@ -17,7 +17,7 @@
 
 
     <!-- Icons Css -->
-    <link href="{{asset('admin/assets/css/icons.min.css')}}" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('admin_styles/assets/css/icons.min.css')}}" rel="stylesheet" type="text/css"/>
     <link href="{{asset('fontiran/fontiran.css')}}" rel="stylesheet" type="text/css"/>
 
     {{--//light--}}
@@ -25,10 +25,10 @@
 {{--    <link href="{{asset('admin/assets/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css"/>--}}
 
     {{--//dark--}}
-    <link href="{{asset('admin/assets/css/bootstrap-dark.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css"/>
-    <link href="{{asset('admin/assets/css/app-dark.min.css')}}" id="app-style" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('admin_styles/assets/css/bootstrap-dark.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('admin_styles/assets/css/app-dark.min.css')}}" id="app-style" rel="stylesheet" type="text/css"/>
 
-    <link href="{{asset('admin/admin_them.css')}}" id="app-style" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('admin_styles/admin_them.css')}}" id="app-style" rel="stylesheet" type="text/css"/>
     <link href="{{asset('css/admin.css')}}" rel="stylesheet" type="text/css"/>
 
 
@@ -99,13 +99,13 @@
 
 
 <!-- JAVASCRIPT -->
-<script src="{{asset('admin/assets/libs/jquery/jquery.min.js')}}"></script>
-<script src="{{asset('admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-<script src="{{asset('admin/assets/libs/metismenu/metisMenu.min.js')}}"></script>
-<script src="{{asset('admin/assets/libs/simplebar/simplebar.min.js')}}"></script>
-<script src="{{asset('admin/assets/libs/node-waves/waves.min.js')}}"></script>
+<script src="{{asset('admin_styles/assets/libs/jquery/jquery.min.js')}}"></script>
+<script src="{{asset('admin_styles/assets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{asset('admin_styles/assets/libs/metismenu/metisMenu.min.js')}}"></script>
+<script src="{{asset('admin_styles/assets/libs/simplebar/simplebar.min.js')}}"></script>
+<script src="{{asset('admin_styles/assets/libs/node-waves/waves.min.js')}}"></script>
 
-<script src="{{asset('admin/assets/js/app.js')}}"></script>
+<script src="{{asset('admin_styles/assets/js/app.js')}}"></script>
 
 
 @yield('js')

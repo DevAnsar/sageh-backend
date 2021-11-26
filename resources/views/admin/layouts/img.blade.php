@@ -1,9 +1,7 @@
 @php
 if (!$url || $url==null){
-    $url='/images/loading-image.svg';
-}else{
-$url='/storage/'.$url;
+    $url='/images/noImage.png';
 }
 @endphp
 
-<img class="vitrin-img" src="{{$url}}">
+<img class="vitrin-img " style="color: white" src="{{$url}}">

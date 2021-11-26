@@ -1,9 +1,11 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
-function biilche_route($route_param, $controller, $except = [], $config = [])
+function custom_route($route_param, $controller, $except = [], $config = [])
 {
 
     Route::post($route_param . '/destroy_items',$controller .'@destroy_items')->name($route_param . '.destroy_items');
@@ -29,38 +31,59 @@ function inTrashed($req)
     }
 }
 
-function uploadImage(Request $request,$dir='',$name=''){
-    if ($request->hasFile($name)) {
-        if ($request->file($name)->isValid()) {
-            $file_name= $request->file($name)->getClientOriginalName();
-            $request->file($name)->storeAs($dir, $file_name,['disk'=>'public']);
-            $url = $dir.'/'.$file_name;
-            return [
-                'status'=>true,
-                'url'=>$url,
-                'name'=>$file_name
-            ];
-        }
+function uploadImage($file,$path='',$name=''){
+//    if ($request->hasFile($name)) {
+//        if ($request->file($name)->isValid()) {
+//            $file_name= $request->file($name)->getClientOriginalName();
+//            $request->file($name)->storeAs($dir, $file_name,['disk'=>'public']);
+//            $url = $dir.'/'.$file_name;
+//            return [
+//                'status'=>true,
+//                'url'=>$url,
+//                'name'=>$file_name
+//            ];
+//        }
+//    }
+//    return [
+//        'status'=>false,
+//        'message'=>''
+//    ];
+
+    $year = Carbon::now()->year;
+    $filePath = "/images/{$year}" . $path;
+
+    $filename = $file->getClientOriginalName();
+
+    if (file_exists(public_path("{$filePath}/{$filename}"))) {
+        $filename = Carbon::now()->timestamp . $filename;
     }
+    $file->move(public_path($filePath), $filename);
     return [
-        'status'=>false,
-        'message'=>''
+        'name'=>$filename,
+        'status' => true,
+        'url' => "{$filePath}/{$filename}"
     ];
 }
 function deleteImage($dir){
 
 //    return $dir;
-    if (Storage::exists('/public/'.$dir)){
-        Storage::delete('/public/'.$dir);
+//    if (Storage::exists('/public/'.$dir)){
+//        Storage::delete('/public/'.$dir);
+//        return true;
+//    }
+//    return false;
+
+    if (file_exists(public_path($dir))) {
+        File::delete(public_path($dir));
         return true;
-    }
-    return false;
+    }else{return false;}
+
 }
 function getImage($dir){
-    if (Storage::exists('/public/'.$dir)){
-        return Storage::url($dir);
-    }
-    return false;
+//    if (Storage::exists('/public/'.$dir)){
+//        return Storage::url($dir);
+//    }
+    return $dir;
 }
 
 function userFullName($user){
@@ -150,4 +173,15 @@ function getAccountStatus(\App\Models\User $user){
         'profile_status' => ($user->name == null || ($user->name == null && $user->family == null)) ? false : true,
         'password_status' => $user->password == null  ? false : true,
     ];
+}
+
+
+function showMobileRoles($user1,$user2){
+
+
+    return true;
+}
+
+function questionHasBookmark($user,$question){
+   return in_array($question->id,$user->favorite_questions()->pluck('id')->toArray());
 }

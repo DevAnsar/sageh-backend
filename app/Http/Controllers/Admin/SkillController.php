@@ -147,29 +147,29 @@ class SkillController extends MainController
      * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        try{
-//            return $id;
-            $query_string=property_exists($this,'query_string') ? '&'.$this->query_string : '';
-            $model_name=$this->model;
-            $row=$model_name::withTrashed()->findOrFail($id);
-            if($row->deleted_at==null){
-                $message="$this->title  انتخاب شده به سطل زباله انتقال یافت";
-                $row->delete();
-            }
-            else{
-                $message="$this->title  انتخاب شده حذف شد";
-
-                $row->icon?deleteImage($row->icon->url):null;
-                $row->image?deleteImage($row->image->url):null;
-
-                $row->forceDelete();
-            }
-            return redirect('admin/'.$this->route_params.'?trashed=true'.$query_string)->with('message',$message);
-
-        }catch (\Exception $e){
-            return back()->withErrors($e->getMessage());
-        }
-    }
+//    public function destroy($id)
+//    {
+//        try{
+////            return $id;
+//            $query_string=property_exists($this,'query_string') ? '&'.$this->query_string : '';
+//            $model_name=$this->model;
+//            $row=$model_name::withTrashed()->findOrFail($id);
+//            if($row->deleted_at==null){
+//                $message="$this->title  انتخاب شده به سطل زباله انتقال یافت";
+//                $row->delete();
+//            }
+//            else{
+//                $message="$this->title  انتخاب شده حذف شد";
+//
+//                $row->icon?deleteImage($row->icon->url):null;
+//                $row->image?deleteImage($row->image->url):null;
+//
+//                $row->forceDelete();
+//            }
+//            return redirect('admin/'.$this->route_params.'?trashed=true'.$query_string)->with('message',$message);
+//
+//        }catch (\Exception $e){
+//            return back()->withErrors($e->getMessage());
+//        }
+//    }
 }

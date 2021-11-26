@@ -72,8 +72,7 @@ class Product extends Model
 //    }
 
     public function image(){
-        return $this->morphOne(File::class,'fileable')
-            ->where('type','=','image');
+        return $this->morphOne(File::class,'fileable')->where('type','=','image');
     }
     public function gallery(){
         return $this->morphOne(File::class,'fileable')->where('type','=','gallery');

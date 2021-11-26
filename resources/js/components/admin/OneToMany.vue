@@ -26,7 +26,7 @@
                              :key="item.id">
                             <span class="many_icon">
                                 <img style="width: 100%;padding:4px" v-if="item.icon != null"
-                                     :src="'/storage/'+item.icon.url"/>
+                                     :src="`/storage/${item.icon.url}`" />
                             </span>
                             <span class="many_title">
                                 {{item.title}}

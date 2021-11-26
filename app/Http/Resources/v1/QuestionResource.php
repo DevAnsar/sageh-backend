@@ -29,17 +29,19 @@ class QuestionResource extends JsonResource
      * @var boolean
      */
     private $status=true;
-
+    public $logged_user;
     /**
      * Create a new resource instance.
      *
      * @param  mixed $resource
      * @param bool $withAnswers
      */
-    public function __construct($resource,$withAnswers=false)
+    public function __construct($resource,$logged_user,$withAnswers=false)
     {
         $this->resource = $resource;
         $this->withAnswers = $withAnswers;
+        $this->logged_user = $logged_user;
+
     }
     /**
      * Transform the resource into an array.
@@ -61,6 +63,7 @@ class QuestionResource extends JsonResource
             'best_answer'=>new AnswerResource($this->best_answer),
 //            'skills'=>new SkillCollection($this->skills),
             'images'=>new FileCollection($this->images),
+            'hasBookmark'=>questionHasBookmark($this->logged_user,$this)
         ];
         if ($this->withAnswers){
             $data=array_merge($data,[

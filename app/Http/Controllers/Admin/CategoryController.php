@@ -64,8 +64,8 @@ class CategoryController extends MainController
             $category = Category::create($inputs);
 
             if ($request->hasFile('icon')) {
-                $icon=uploadImage($request, "categories/$category->slug/icon", 'icon');
-                $category->icon()->create(['url' =>$icon['url'], 'type' => 'icon']);
+                $icon_url=uploadImage($request->file('icon'), "categories/$category->slug/icon", 'icon');
+                $category->icon()->create(['url' =>$icon_url, 'type' => 'icon']);
             }
             if ($request->hasFile('image')) {
                 $image=uploadImage($request, "categories/$category->slug/image", 'image');
@@ -113,25 +113,25 @@ class CategoryController extends MainController
             $category->update($inputs);
 
             if ($request->file('icon')) {
-                $res = uploadImage($request, "categories/$category->slug/icon", 'icon');
-                if ($res['status']) {
+                $res = uploadImage($request->file('icon'), "/categories/$category->slug/icon", 'icon');
+                if ($res) {
                     if ($category->icon) {
                         deleteImage($category->icon['url']);
-                        $category->icon()->update(['url' => $res['url'], 'name' => $res['name']]);
+                        $category->icon()->update(['url' => $res, 'name' => 'icon']);
                     } else {
-                        $category->icon()->create(['url' => $res['url'], 'name' => $res['name'], 'type' => 'icon']);
+                        $category->icon()->create(['url' => $res, 'name' => 'icon', 'type' => 'icon']);
                     }
                 }
             }
 
             if ($request->file('image')) {
-                $res = uploadImage($request, "/categories/$category->slug/image", 'image');
-                if ($res['status']) {
+                $res = uploadImage($request->file('image'), "/categories/$category->slug/image", 'image');
+                if ($res) {
                     if ($category->image) {
                         deleteImage($category->image['url']);
-                        $category->image()->update(['url' => $res['url'], 'name' => $res['name']]);
+                        $category->image()->update(['url' => $res, 'name' => 'image']);
                     } else {
-                        $category->image()->create(['url' => $res['url'], 'name' => $res['name'], 'type' => 'image']);
+                        $category->image()->create(['url' => $res, 'name' => 'image', 'type' => 'image']);
                     }
                 }
             }

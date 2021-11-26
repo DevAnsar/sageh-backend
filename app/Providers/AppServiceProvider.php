@@ -14,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+//        $this->app->bind('path.public', function() {
+//            return base_path('public_html');
+//        });
     }
 
     /**
@@ -26,5 +28,8 @@ class AppServiceProvider extends ServiceProvider
     {
         JsonResource::withoutWrapping();
         //
+        if($this->app->environment('production')) {
+            \URL::forceScheme('https');
+        }
     }
 }

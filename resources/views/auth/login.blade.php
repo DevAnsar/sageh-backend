@@ -151,7 +151,7 @@
             </div>
             <div class="mt-5 text-center">
                 <p>حساب کاربری ندارید؟<a href="{{route('register')}}" class="font-weight-medium text-primary">ثبت نام</a> </p>
-                <p>Biilche © 2020 </p>
+                <p>Sagheh.ir © 2020 </p>
             </div>
 
         </div>

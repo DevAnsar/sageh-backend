@@ -12,11 +12,13 @@ class QuestionSearch
     use HasFactory;
 
     public $questions = [];
+    public $category = null;
     public $string = '?';
     protected $paginate;
 
-    public function __construct($paginate = 10)
+    public function __construct(Category $category = null, $paginate = 10)
     {
+        $this->category = $category;
         $this->paginate = $paginate;
     }
 
@@ -26,16 +28,20 @@ class QuestionSearch
 //        $skills=explode(',',$skills);
 //        $skills=array_filter($skills);
 
-         $questions = Question::query()->orderBy('created_at','DESC');
+        if ($this->category != null) {
+            $questions = $this->category->questions()->orderBy('created_at', 'DESC');
+        } else {
+            $questions = Question::query()->orderBy('created_at', 'DESC');
 
-        if(inTrashed($request))
-        {
-
-            $questions=$questions->onlyTrashed();
-            $this->string=create_paginate_url($this->string,'trashed=true');
         }
-        if(isset($request['string']) && !empty($request['string']))
-        {
+
+
+        if (inTrashed($request)) {
+
+            $questions = $questions->onlyTrashed();
+            $this->string = create_paginate_url($this->string, 'trashed=true');
+        }
+        if (isset($request['string']) && !empty($request['string'])) {
             $searchValues = preg_split('/\s+/', $request['string']);
             $questions->where(function ($q) use ($searchValues) {
                 foreach ($searchValues as $value) {
@@ -44,7 +50,7 @@ class QuestionSearch
             });
 //            $questions=$questions->where('name','like','%'.$request['string'].'%');
 //            $questions=$questions->orWhere('family','like','%'.$request['string'].'%');
-            $this->string=create_paginate_url($this->string,'string='.$request['string']);
+            $this->string = create_paginate_url($this->string, 'string=' . $request['string']);
         }
 
         foreach ($with as $item) {
@@ -54,7 +60,7 @@ class QuestionSearch
         }
 
         if (isset($request['category_id']) && !empty($request['category_id']) && $request['category_id'] != 0) {
-            $category_id=$request['category_id'];
+            $category_id = $request['category_id'];
             $questions->whereHas('category', function ($q) use ($category_id) {
                 $q->where('id', $category_id);
             });
@@ -77,9 +83,8 @@ class QuestionSearch
 //        }
 
 
-
-        $questions=$questions->paginate($this->paginate);
-        $questions=$questions->withPath($this->string);
+        $questions = $questions->paginate($this->paginate);
+        $questions = $questions->withPath($this->string);
         $this->questions = $questions;
 
         return $questions;
@@ -89,44 +94,48 @@ class QuestionSearch
     public function getSearchForClient(Request $request, $with = [])
     {
 
-        if ($request->has('category_id') && !empty($request->input('category_id')) && $request->input('category_id') != 0 ) {
-            $category_id=$request->input('category_id');
-            $category=Category::find($category_id);
-            if ($category){
-                $questions=$category->questions();
-            }else{
-                $questions = Question::query();
-            }
-        }
-        else{
+//        if ($request->has('category_id') && !empty($request->input('category_id')) && $request->input('category_id') != 0) {
+//            $category_id = $request->input('category_id');
+//            $category = Category::find($category_id);
+//            if ($category) {
+//                $questions = $category->questions();
+//            } else {
+//                $questions = Question::query();
+//            }
+//        } else {
+//            $questions = Question::query();
+//        }
+
+        if ($this->category != null) {
+            $questions = $this->category->questions();
+        } else {
             $questions = Question::query();
+
         }
 
-         if ($request->has('order_by') && $request->input('order_by')!=''){
-             $order_by=$request->input('order_by');
 
-             switch ($order_by){
-                 case 'ASC':
+        if ($request->has('order_by') && $request->input('order_by') != '') {
+            $order_by = $request->input('order_by');
 
-                     $questions=$questions->orderBy('created_at','ASC');
-                     break;
-                 case 'DESC':
-                     $questions=$questions->orderBy('created_at','DESC');
-                     break;
-                 default:
-                     $questions=$questions->orderBy('created_at','DESC');
-                     break;
-             }
-         }else{
-             $questions=$questions->orderBy('created_at','DESC');
-         }
+            switch ($order_by) {
+                case 'ASC':
+                     $questions = $questions->orderBy('created_at', 'ASC');
+                    break;
+                case 'DESC':
+                     $questions = $questions->orderBy('created_at', 'DESC');
+                    break;
+                default:
+                     $questions = $questions->orderBy('created_at', 'DESC');
+            }
+        } else {
+            $questions = $questions->orderBy('created_at', 'DESC');
+        }
 
-         if ($request->has('city_id') && is_numeric($request->input('city_id')) && $request->input('city_id')!=0){
-            $questions=$questions->where('city_id','=',$request->input('city_id'));
-         }
+        if ($request->has('city_id') && is_numeric($request->input('city_id')) && $request->input('city_id') != 0) {
+            $questions = $questions->where('city_id', '=', $request->input('city_id'));
+        }
 
-        if(isset($request['string']) && !empty($request['string']))
-        {
+        if (isset($request['string']) && !empty($request['string'])) {
             $searchValues = preg_split('/\s+/', $request['string']);
             $questions->where(function ($q) use ($searchValues) {
                 foreach ($searchValues as $value) {
@@ -143,8 +152,7 @@ class QuestionSearch
         }
 
 
-
-        $questions=$questions->paginate($this->paginate);
+        $questions = $questions->paginate($this->paginate);
 //        $questions=$questions->withPath($this->string);
         $this->questions = $questions;
 

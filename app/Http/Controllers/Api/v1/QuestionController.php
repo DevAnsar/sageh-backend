@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\v1\StoreQuestionRequest;
+use App\Http\Resources\v1\CategoryResource;
 use App\Http\Resources\v1\QuestionCollection;
 use App\Http\Resources\v1\QuestionResource;
+use App\Models\Category;
 use App\Models\Question;
 use App\Models\Search\QuestionSearch;
+use http\Client\Curl\User;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -25,16 +28,24 @@ class QuestionController extends Controller
             if ($request->has('paginate') && $request->input('paginate') != 0) {
                 $paginate = $request->input('paginate');
             }
-            $questions_obj = new QuestionSearch($paginate);
+
+            $category=null;
+            if ($request->has('category_slug')){
+                $category_slug=$request->input('category_slug');
+                $category=Category::where('slug','=',$category_slug)->first();
+                if (!$category){$category=null;}
+            }
+
+            $questions_obj = new QuestionSearch($category,$paginate);
             $questions = $questions_obj->getSearchForClient($request, ['images', 'user','category']);
-//            $questions = Question::where('status', '=', '1')
-//                ->with('user')
-//                ->latest()
-//                ->paginate(5);
+
+            $user=\App\Models\User::find(1);
 
             return response()->json([
                 'status' => true,
-                'questions' => new QuestionCollection($questions)
+                'questions' => new QuestionCollection($questions,$user),
+                'category'=>$category ? new CategoryResource($category) : null,
+
             ]);
 
 
@@ -100,7 +111,7 @@ class QuestionController extends Controller
      * @param StoreQuestionRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function toggleToFavorite(Request $request)
+    public function addToFavorite(Request $request)
     {
         try {
 
@@ -117,7 +128,57 @@ class QuestionController extends Controller
                 return $this->customResponse(false, 'موارد الزامی را وارد کنید', [], $errors);
 
             }
-            $user = auth()->user();
+//            $user = auth()->user();
+            $user = \App\Models\User::find(1);
+
+//            $this->validate($request, [
+//                'question_id' => 'required|int',
+//            ]);
+
+            $question_id = $request->input('question_id');
+            $question = Question::find($question_id);
+
+            if ($question) {
+                $favorite = $user->favorite_questions()->where('question_id', $question_id)->first();
+                if ($favorite) {
+//                    $user->favorite_questions()->detach($question);
+                    return $this->customResponse(false, 'سوال در لیست علاقه مندی ها میباشد');
+                } else {
+                    $user->favorite_questions()->attach($question);
+                    return $this->customResponse(true, 'سوال به لیست ذخیره اضافه شد');
+                }
+            } else {
+                return $this->customResponse(false, 'سوالی برای درخواست شما ثبت نشده است');
+            }
+
+
+        } catch (\Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
+    }
+    /*
+     * @param StoreQuestionRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function removeToFavorite(Request $request)
+    {
+        try {
+
+            $request_valid = true;
+            $errors = [];
+            if (!$request->has('question_id') || $request->input('question_id')== 0 || !is_numeric($request->input('question_id'))) {
+                $request_valid = false;
+                $errors = array_merge($errors, array(
+                    'question_id' => 'آیدی پرسش الزامی است'
+                ));
+            }
+
+            if (!$request_valid) {
+                return $this->customResponse(false, 'موارد الزامی را وارد کنید', [], $errors);
+
+            }
+//            $user = auth()->user();
+            $user = \App\Models\User::find(1);
 
 //            $this->validate($request, [
 //                'question_id' => 'required|int',
@@ -132,8 +193,8 @@ class QuestionController extends Controller
                     $user->favorite_questions()->detach($question);
                     return $this->customResponse(true, 'سوال از لیست علاقه مندی ها حذف شد');
                 } else {
-                    $user->favorite_questions()->attach($question);
-                    return $this->customResponse(true, 'سوال به لیست ذخیره اضافه شد');
+//                    $user->favorite_questions()->attach($question);
+                    return $this->customResponse(true, 'سوال در لیست علاقه مندی ها نمیباشد');
                 }
             } else {
                 return $this->customResponse(true, 'سوالی برای درخواست شما ثبت نشده است');

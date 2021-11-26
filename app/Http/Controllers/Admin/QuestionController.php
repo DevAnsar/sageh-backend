@@ -29,7 +29,7 @@ class QuestionController extends MainController
         try {
 //         $questions = Question::latest()->paginate(20);
 //        $questions = Question::getData($request->all());
-            $questions_search = new QuestionSearch(10);
+            $questions_search = new QuestionSearch(null ,10);
             $questions = $questions_search->getSearch($request, ['images']);
             $trash_question_count = Question::onlyTrashed()->count();
 

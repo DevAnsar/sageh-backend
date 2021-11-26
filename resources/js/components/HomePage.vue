@@ -5,7 +5,7 @@
         </div>
         <div class="theme">
             <h1 class="page_title">
-                <span style="font-weight: 800;color:#079400">B</span>iilche.ir
+                <span style="font-weight: 800;color:#079400">S</span>ageh.ir
 
                 <span style="margin: 8px 25px;font-size: 1rem;float: right;">
                     <a href="https://github.com/biilche">
@@ -18,10 +18,10 @@
 
             <ul>
                 <li>
-                    What is <span class="name_starter">B</span>iilche?
+                    What is <span class="name_starter">S</span>ageh?
                     <ul>
                         <li>
-                            <span class="name_starter">B</span>iilche is an agricultural integration system. We call it:
+                            <span class="name_starter">S</span>ageh is an agricultural integration system. We call it:
                             the farmer secretary.
                         </li>
                     </ul>
@@ -32,9 +32,9 @@
                         <li>
                             <a href="/admin/dashboard">Admin Panel</a>
                         </li>
-                        <li>
-                            <a href="/api/documentation">Api Documentation</a>
-                        </li>
+<!--                        <li>-->
+<!--                            <a href="/api/documentation">Api Documentation</a>-->
+<!--                        </li>-->
                     </ul>
                 </li>
 
@@ -79,13 +79,13 @@
         },
 
         mounted() {
-            let scafold = window.$('#scafold');
-            let width = window.innerWidth;
-            let height = window.innerHeight;
-            console.log('w', width);
-            console.log('h', height);
+            // let scafold = window.$('#scafold');
+            // let width = window.innerWidth;
+            // let height = window.innerHeight;
+            // console.log('w', width);
+            // console.log('h', height);
 
-            this.style.height = height;
+            this.style.height = window.innerHeight;
 
         },
         methods: {}

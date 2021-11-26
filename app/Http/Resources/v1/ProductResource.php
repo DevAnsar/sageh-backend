@@ -28,7 +28,7 @@ class ProductResource extends JsonResource
         $data=[
             'id'=>$this->id,
             'title'=>$this->title,
-            'image'=>$this->image?Storage::url($this->image['url']):null,
+            'image'=>$this->image?$this->image:null,
             'description'=>$this->description,
             'gallery'=>$this->gallery,
             'category'=>new CategoryResource($this->category),

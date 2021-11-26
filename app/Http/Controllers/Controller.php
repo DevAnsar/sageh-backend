@@ -8,24 +8,6 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
-
-/**
- * @OA\Info(
- *      version="1.1.0",
- *      title="Biilche.ir",
- *      description="Biilche Application API",
- *      @OA\Contact(
- *          email="ansaramman@gmail.com"
- *      ),
- * )
- *
- * @OA\Server(
- *      url="http://admin.biilche.ir/api/v1",
- *      description="Version 1"
- * )
- *
- */
-//http://127.0.0.1:8000/api/v1
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;

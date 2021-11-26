@@ -24,12 +24,12 @@ Route::get('/', function () {return view('welcome');});
 Route::prefix('admin')->as('admin.')->middleware('auth')->group(function (){
 
     Route::get('/dashboard',[IndexController::class,'dashboard'])->name('dashboard');
-    biilche_route('skills',SkillController::class);
-    biilche_route('categories',CategoryController::class);
-    biilche_route('users',UserController::class);
-    biilche_route('products',ProductController::class);
-    biilche_route('questions',QuestionController::class);
-    biilche_route('questions/{question}/answers',AnswerController::class);
+    custom_route('skills',SkillController::class);
+    custom_route('categories',CategoryController::class);
+    custom_route('users',UserController::class);
+    custom_route('products',ProductController::class);
+    custom_route('questions',QuestionController::class);
+    custom_route('questions/{question}/answers',AnswerController::class);
 
     //ajax
 //    Route::post('categories/{category_id}/skills/store',[CategoryController::class,'store_skills'])->name('categories.skills.sync');

@@ -66,7 +66,7 @@
                                             </td>
                                             <th>{{$key+1}}</th>
                                             <th>
-                                                @include('admin.layouts.img',['url'=>$product->image['url']])
+                                                @include('admin.layouts.img',['url'=>$product->image ? $product->image['url']:null])
                                             </th>
                                             <th>{{$product->title}}</th>
                                             <th>

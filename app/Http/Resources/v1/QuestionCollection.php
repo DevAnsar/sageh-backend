@@ -17,6 +17,22 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class QuestionCollection extends ResourceCollection
 {
 
+    public $logged_user;
+
+    /**
+     * Create a new resource instance.
+     *
+     * @param mixed $resource
+     * @param $logged_user
+     */
+    public function __construct($resource, $logged_user)
+    {
+        parent::__construct($resource);
+
+        $this->resource = $this->collectResource($resource);
+        $this->logged_user=$logged_user;
+    }
+
     /**
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Support\Collection
@@ -37,6 +53,7 @@ class QuestionCollection extends ResourceCollection
 //                'skills'=>new SkillCollection($item->skills),
                 'images'=>new FileCollection($item->images),
                 'category'=>new CategoryResource($item->category),
+                'hasBookmark'=>questionHasBookmark($this->logged_user,$item)
             ];
             return $questions;
         });

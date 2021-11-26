@@ -4,13 +4,13 @@
 
         <div class="user-wid text-center py-4">
             <div class="user-img">
-                <img src="{{auth()->user()->avatar?getImage(auth()->user()->avatar['url']):asset('admin/assets/images/users/avatar-2.jpg')}}"
+                <img src="{{auth()->user()->avatar?asset(getImage(auth()->user()->avatar['url'])):asset('admin_styles/assets/images/users/avatar-2.jpg')}}"
                      alt="" class="avatar-md mx-auto rounded-circle">
             </div>
 
             <div class="mt-3">
 
-                <a href="#" class="text-dark font-weight-medium font-size-16">بیلچه</a>
+                <a href="#" class="text-dark font-weight-medium font-size-16">sageh.ir</a>
                 <p class="text-body mt-1 mb-0 font-size-13">
                     {{userFullName(auth()->user())}}
                 </p>

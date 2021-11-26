@@ -4,7 +4,6 @@ namespace App\Models\Search;
 
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\Request;
 
@@ -19,9 +18,6 @@ class ProductSearch
 
     public function __construct(Category $category=null, $paginate = 10)
     {
-        if ($category != null){
-            $this->category=$category;
-        }
         $this->category = $category;
         $this->paginate = $paginate;
     }
@@ -108,14 +104,10 @@ class ProductSearch
     public function getSearchForClient(Request $request, $with = [])
     {
 
-        if ($request->has('category_id') && !empty($request->input('category_id')) && $request->input('category_id') != 0 ) {
-            $category_id=$request->input('category_id');
-            $category=Category::find($category_id);
-            if ($category){
-                $products=$category->products();
-            }else{
-                $products = Product::query();
-            }
+        if (!empty($this->category)) {
+
+                return $products=$this->category->products()->get();
+
         }
         else{
             $products = Product::query();
@@ -126,12 +118,10 @@ class ProductSearch
 
             switch ($order_by){
                 case 'ASC':
-
                     $products=$products->orderBy('created_at','ASC');
-                    break;
                 case 'DESC':
                     $products=$products->orderBy('created_at','DESC');
-                    break;
+
                 default:
                     $products=$products->orderBy('created_at','DESC');
                     break;

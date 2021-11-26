@@ -20,7 +20,8 @@ class CategoryCollection extends ResourceCollection
             return [
                 'id' => $item->id,
                 'title' => $item->title,
-                'icon' => $item->icon?Storage::url($item->icon['url']):null,
+                'slug'=>$item->slug,
+                'icon' => $item->icon?getImage($item->icon['url']):null,
             ];
         });
     }

@@ -30,7 +30,8 @@ class ProductController extends MainController
      */
     public function index(Request $request)
     {
-        $products_search=new ProductSearch($request['category_id'],1);
+        $category=Category::find($request['category_id']);
+        $products_search=new ProductSearch($category,5);
         $products=$products_search->getSearch($request,['image']);
         $trash_product_count = Product::onlyTrashed()->count();
         $allCategories=Category::oldest()->select(['id','title'])->with(['icon'])->get();
@@ -114,7 +115,7 @@ class ProductController extends MainController
 
             if ($request->file('image')) {
 
-                $res = uploadImage($request, "/products/$product->id/image", 'image');
+                $res = uploadImage($request->file('image'), "/products/$product->id/image", 'image');
                 if ($res['status']) {
                     if ($product->image) {
                         deleteImage($product->image['url']);

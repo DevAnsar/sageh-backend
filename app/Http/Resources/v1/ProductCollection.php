@@ -18,7 +18,8 @@ class ProductCollection extends ResourceCollection
         return $this->collection->map(function ($item){
                 return [
                     'title'=>$item->title,
-                    'image'=>$item->image?Storage::url($item->image['url']):null,
+                    'slug'=>$item->slug,
+                    'image'=>$item->image? $item->image :null,
                     'description'=>$item->description,
                     'gallery'=>$item->gallery,
                     'category'=>new CategoryResource($item->category),

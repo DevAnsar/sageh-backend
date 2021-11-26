@@ -21,7 +21,7 @@ Route::namespace('\Api\v1')->prefix('v1')->group(function () {
     Route::get('/users/{user_id}/products', [UserController::class,'getProducts']);
 
     Route::get('/getProducts', [ProductController::class,'getProducts']);
-    Route::get('/products/{product_id}', [ProductController::class,'getProduct']);
+    Route::get('/products/{product_slug}', [ProductController::class,'getProduct']);
 
     //login and register
     Route::group(['middleware' => 'api','prefix' => 'auth'],function () {
@@ -40,11 +40,13 @@ Route::namespace('\Api\v1')->prefix('v1')->group(function () {
 //        Route::post('verification_mobile', [AuthController::class,'verification_mobile']);
     });
 
-    Route::group(['middleware' => 'auth:api'],function () {
+//    auth:
+    Route::group(['middleware' => 'api'],function () {
         Route::post('/user/setCategory', [UserController::class,'setCategory']);
         Route::post('/sendQuestions', [QuestionController::class,'sendQuestions']);
         Route::post('/questions/{question_id}/sendAnswers', [AnswerController::class,'sendAnswers']);
-        Route::post('/questions/toggleToFavorite', [QuestionController::class,'toggleToFavorite']);
+        Route::post('/questions/addToFavorite', [QuestionController::class,'addToFavorite']);
+        Route::post('/questions/removeToFavorite', [QuestionController::class,'removeToFavorite']);
         Route::get('/questions/favorites', [QuestionController::class,'my_favorite_questions']);
         Route::patch('/questions/{question_id}/edit', [QuestionController::class,'my_question_edit']);
         Route::delete('/questions/{question_id}/delete', [QuestionController::class,'my_question_destroy']);
